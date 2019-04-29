@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+hearder {
+	display : inline-block;
+	width : 100%;
+}
+
+.boardTitle {
+	display : inline-block;
+	width : 90%;
+	text-align : center;
+}

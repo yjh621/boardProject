@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userMapper">
+
+    <!-- 사용자 로그인 -->
+	<select id="userLogin" parameterType="User" resultType="boolean">
+		SELECT 
+			IF(COUNT(*) > 0 , true, false) AS loginCheck
+		FROM 
+			BP_USR
+		WHERE 
+			USR_ID = #{usr_id} AND USR_PWD = #{usr_pwd}
+	</select>	
+	
+	<select id="userDetail" parameterType="User" resultType="string">
+	   SELECT
+	     `USR_NM` AS usr_nm
+	   FROM 
+	      BP_USR
+	   WHERE
+	      USR_ID = #{usr_id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardMapper">
+
+   <!-- 게시판 목록을 가져옵니다. -->
+   <select id="getBoardList" resultType="Board">
+	    SELECT
+		`BRD_SEQ` as brd_seq, `BRD_TITLE` as brd_title,
+		(SELECT B.`USR_NM` FROM `BP_USR` B WHERE A.`BRD_USR_ID` = B.USR_ID) as brd_usr_nm,
+		 DATE_FORMAT(`BRD_REG_DATE`, "%Y-%m-%d %H:%i:%s") as brd_reg_date, 
+		 `BRD_VIEW_CNT` AS brd_view_cnt
+		FROM
+		 `BP_BRD` A
+		ORDER BY `BRD_REG_DATE` DESC
+   </select>
+   
+   <!-- 하나의 게시판 내용을 가져옵니다. -->
+   <select id="getBoardDetail" parameterType ="int" resultType="Board">
+	    SELECT
+			 `BRD_SEQ` as brd_seq, `BRD_USR_ID` as brd_usr_id, `BRD_TITLE` as brd_title, `BRD_CONTENTS` as brd_contents, 
+			(SELECT B.`USR_NM` FROM `BP_USR` B WHERE A.`BRD_USR_ID` = B.USR_ID) as brd_usr_nm,
+			 DATE_FORMAT(`BRD_REG_DATE`, "%Y-%m-%d %H:%i:%s") as brd_reg_date, 
+			DATE_FORMAT(`BRD_MDF_DATE`, "%Y-%m-%d %H:%i:%s") as brd_mdf_date,
+			 `BRD_VIEW_CNT` AS brd_view_cnt		
+			FROM
+			 `BP_BRD` A
+		   WHERE `BRD_SEQ` = #{brd_seq}	   
+   </select>
+   <!-- 해당 게시물을 작성한 사용자를 가져옵니다. -->
+   <select id="boardWriterCheck" parameterType="Board" resultType="boolean">
+      SELECT
+	 IF(COUNT(*) = 1 , true, false) as boardWriterCheck
+	FROM
+	 `BP_BRD`
+	WHERE
+	 `BRD_USR_ID` = #{brd_usr_id} AND `BRD_SEQ` = #{brd_seq}
+   </select>		      
+   <!-- 조회수를 증가시킵니다. -->
+   <update id="updateBoardCnt" parameterType="int">
+      UPDATE 
+      	`BP_BRD` SET `BRD_VIEW_CNT` = `BRD_VIEW_CNT` + 1 
+     WHERE 
+      `BRD_SEQ` = #{brd_seq}
+   </update>
+   
+   <!-- 게시판에 글을 등록합니다. -->
+   <insert id="registBoard" parameterType="Board">
+     INSERT INTO `BP_BRD` 
+     	(`BRD_TITLE`, `BRD_CONTENTS`, `BRD_USR_ID`) 
+     VALUES 
+     (
+	     #{brd_title}, #{brd_contents}, #{brd_usr_id}
+	 )	
+   </insert>
+   
+   <!-- 게시글을 수정합니다. -->
+   <update id="modifyBoard" parameterType="Board">
+     UPDATE `BP_BRD` SET 
+       `BRD_TITLE` = #{brd_title}, `BRD_CONTENTS` = #{brd_contents}, `BRD_MDF_DATE` = #{brd_mdf_date}
+     WHERE
+       `BRD_SEQ` = #{brd_seq}
+   </update>
+   
+   <!-- 게시판을 삭제합니다. -->
+   <delete id="deleteBoard" parameterType = "int">
+      DELETE FROM BP_BRD
+      WHERE BRD_SEQ  = #{brd_seq}
+   </delete>
+</mapper>
+

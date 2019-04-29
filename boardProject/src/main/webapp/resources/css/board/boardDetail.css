@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+div.detailBorder {
+	padding : 20px; 
+	border : 1px solid #e2476b;
+} 
+
+div.buttonDiv {
+	margin-top : 20px;
+	margin-bottom : 20px;
+}
