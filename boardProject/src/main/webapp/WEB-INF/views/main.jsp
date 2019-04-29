@@ -17,7 +17,7 @@
 <body>
 	<h1 style="color:green">로그인</h1>
 
-	<strong>Id :</strong>
+	<strong>aaaaId :</strong>
 	<input type="text" id="userId" /> Password :
 	<input type="password" id="userPwd" />
 	<button type="button" onclick="loginCheck()">로그인</button>
