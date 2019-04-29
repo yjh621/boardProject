@@ -15,7 +15,7 @@
 </script>
 </head>
 <body>
-	<h1>로그인</h1>
+	<h1 style="color:green">로그인</h1>
 
 	Id :
 	<input type="text" id="userId" /> Password :
